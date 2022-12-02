@@ -55,6 +55,8 @@ public class XmlParserWithReplacingAttributesSavingFormatting {
     public static void main(String[] args) {
         new XmlParserWithReplacingAttributesSavingFormatting()
                 .copyXmlFileWithCorrectedPersons("persons.xml");
+        new XmlParserWithReplacingAttributesSavingFormatting()
+                .copyXmlFileWithCorrectedPersons("persons_oneRow.xml");
     }
 
     public void copyXmlFileWithCorrectedPersons(String inFileName) {
@@ -79,8 +81,8 @@ public class XmlParserWithReplacingAttributesSavingFormatting {
 
             Matcher personsStartTagMatcher = personsStartTagPattern.matcher(currentRow);
             if (personsStartTagMatcher.find()) {
-                bufferedWriter.write(personsStartTagMatcher.group());
-                currentRow = "";
+                bufferedWriter.write(currentRow.substring(0, personsStartTagMatcher.end()));
+                currentRow = currentRow.substring(personsStartTagMatcher.end());
                 break;
             } else {
                 bufferedWriter.write(currentRow);
@@ -96,9 +98,7 @@ public class XmlParserWithReplacingAttributesSavingFormatting {
         Pattern personTagPattern = Pattern.compile(personTagRegex);
         Pattern personsEndTagPattern = Pattern.compile(personsEndTagRegex);
 
-        while (scanner.hasNextLine()) {
-            currentRow += nextLine(scanner);
-
+        do {
             Matcher personMatcher = personTagPattern.matcher(currentRow);
             while (personMatcher.find()) {
                 String person = getCorrectedPerson(personMatcher.group());
@@ -109,9 +109,11 @@ public class XmlParserWithReplacingAttributesSavingFormatting {
             Matcher personsEndTagMatcher = personsEndTagPattern.matcher(currentRow);
             if (personsEndTagMatcher.find()) {
                 bufferedWriter.write(personsEndTagMatcher.group());
+                currentRow = currentRow.substring(personsEndTagMatcher.end());
                 break;
             }
-        }
+            currentRow += nextLine(scanner);
+        } while (scanner.hasNextLine());
     }
 
     private String getCorrectedPerson(String person) {
@@ -142,6 +144,7 @@ public class XmlParserWithReplacingAttributesSavingFormatting {
     }
 
     private void writeAllAfterPersons(Scanner scanner, BufferedWriter bufferedWriter) throws IOException {
+        bufferedWriter.write(currentRow);
         while (scanner.hasNextLine()) {
             currentRow = nextLine(scanner);
             bufferedWriter.write(currentRow);
