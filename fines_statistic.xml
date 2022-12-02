@@ -1,0 +1,10 @@
+<fines_statistic>
+  <fines>
+    <fine type="ALCOHOL_INTOXICATION" fine_amount="3519000.0"/>
+    <fine type="NO_DRIVING_LICENSE" fine_amount="206000.0"/>
+    <fine type="INCORRECT_PARKING" fine_amount="131600.0"/>
+    <fine type="RED_LIGHT" fine_amount="118950.0"/>
+    <fine type="NO_SEAT_BELT" fine_amount="101490.0"/>
+    <fine type="SPEEDING" fine_amount="69700.0"/>
+  </fines>
+</fines_statistic>
