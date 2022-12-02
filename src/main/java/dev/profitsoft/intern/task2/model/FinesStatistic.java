@@ -15,5 +15,5 @@ public class FinesStatistic {
 
     @JacksonXmlElementWrapper(localName = "fines")
     @JacksonXmlProperty(localName = "fine")
-    private List<FineAmountByType> finesStatistic;
+    private List<Fine> finesStatistic;
 }

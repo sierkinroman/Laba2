@@ -1,12 +1,12 @@
 package dev.profitsoft.intern.task2;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import dev.profitsoft.intern.task2.model.Fine;
-import dev.profitsoft.intern.task2.model.FineAmountByType;
 import dev.profitsoft.intern.task2.model.FineType;
 import dev.profitsoft.intern.task2.model.FinesStatistic;
 
@@ -29,14 +29,14 @@ public class Task2 {
     public static void main(String[] args) throws IOException {
         FinesGenerator.createFines(finesRootDirectory);
 
-        List<FineAmountByType> fineStatistic = getFineStatistic();
+        List<Fine> fineStatistic = getFineStatistic();
 
-        fineStatistic.sort(Comparator.comparing(FineAmountByType::getFineAmount).reversed());
+        fineStatistic.sort(Comparator.comparing(Fine::getFineAmount).reversed());
 
         writeStatisticToXml(fineStatistic);
     }
 
-    public static List<FineAmountByType> getFineStatistic() throws IOException {
+    public static List<Fine> getFineStatistic() throws IOException {
         Map<FineType, BigDecimal> finesAmountByType = new HashMap<>();
 
         for (File fineFile : getFineFiles(new File(finesRootDirectory))) {
@@ -49,9 +49,9 @@ public class Task2 {
             }
         }
 
-        List<FineAmountByType> finesStatistics = new ArrayList<>();
+        List<Fine> finesStatistics = new ArrayList<>();
         finesAmountByType.forEach((fineType, fineAmount) ->
-                finesStatistics.add(new FineAmountByType(fineType, fineAmount)));
+                finesStatistics.add(new Fine(fineType, fineAmount)));
 
         return finesStatistics;
     }
@@ -109,9 +109,11 @@ public class Task2 {
         return fine;
     }
 
-    public static void writeStatisticToXml(List<FineAmountByType> fineStatistic) throws IOException {
+    public static void writeStatisticToXml(List<Fine> fineStatistic) throws IOException {
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        xmlMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
         xmlMapper.writeValue(new File("fines_statistic.xml"), new FinesStatistic(fineStatistic));
     }
 
