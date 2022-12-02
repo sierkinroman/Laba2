@@ -27,7 +27,7 @@ public class Task2 {
     private static final String finesRootDirectory = "." + File.separator + "fines" + File.separator;
 
     public static void main(String[] args) throws IOException {
-        FinesGenerator.createFines(finesRootDirectory);
+        FinesGenerator.createFineFiles(finesRootDirectory);
 
         List<Fine> fineStatistic = getFineStatistic();
 
