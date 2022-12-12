@@ -62,8 +62,9 @@ public class XmlParserWithReplacingAttributesSavingFormatting {
     public void copyXmlFileWithCorrectedPersons(String inFileName) {
         String outFileName = "processed_" + inFileName;
         try (InputStream is = new FileInputStream(inFileName);
-             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outFileName))) {
-            Scanner scanner = new Scanner(is, StandardCharsets.UTF_8);
+             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outFileName));
+             Scanner scanner = new Scanner(is, StandardCharsets.UTF_8)) {
+//            Scanner scanner = new Scanner(is, StandardCharsets.UTF_8);
             writeAllBeforePersons(scanner, bufferedWriter);
             writePersons(scanner, bufferedWriter);
             writeAllAfterPersons(scanner, bufferedWriter);

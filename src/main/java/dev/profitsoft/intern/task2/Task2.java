@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import dev.profitsoft.intern.task2.model.Fine;
 import dev.profitsoft.intern.task2.model.FineType;
 import dev.profitsoft.intern.task2.model.FinesStatistic;
@@ -113,6 +114,7 @@ public class Task2 {
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
         xmlMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
 
         xmlMapper.writeValue(new File("fines_statistic.xml"), new FinesStatistic(fineStatistic));
     }
